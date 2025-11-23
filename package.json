@@ -2,7 +2,7 @@
   "name": "mqtt-dashboard",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://smoshizi.github.io/sensor-dashboard",
+  "homepage": "https://hoangphuongphan112.github.io/testing-dashboard",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
