@@ -249,6 +249,9 @@ function App() {
                 const updated = { ...prev };
                 const now = Date.now();
                 
+                console.log(`  Current browser time: ${now}, Base timestamp: ${decoded.baseTimestamp * 1000}`);
+                console.log(`  Time difference: ${(now - decoded.baseTimestamp * 1000) / 1000} seconds`);
+                
                 // Map the 4 channels to the sensor keys
                 for (let i = 0; i < Math.min(mapping.length, decoded.channels.length); i++) {
                   const mappedKey = mapping[i];
@@ -259,7 +262,7 @@ function App() {
                   }));
                   console.log(`  Mapping channel ${i} to ${mappedKey}: ${newPoints.length} new points, ${oldArr.length} old points`);
                   const combined = [...oldArr, ...newPoints].filter(d => now - d.time <= WINDOW_MS);
-                  console.log(`  ${mappedKey} after filter: ${combined.length} points`);
+                  console.log(`  ${mappedKey} after filter: ${combined.length} points (filtered ${newPoints.length - combined.length + oldArr.length - combined.length} old points)`);
                   updated[mappedKey] = combined;
                 }
                 
