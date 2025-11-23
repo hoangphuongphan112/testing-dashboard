@@ -324,6 +324,8 @@ function App() {
             const decoded = decodeTempHumData(data.base64_sensordata);
             if (decoded) {
               console.log('  ✅ Successfully decoded temp/hum data:', decoded);
+              console.log('  📊 Setting Temperature 1:', decoded.temperature, '°C');
+              console.log('  📊 Setting Humidity 1:', decoded.humidity, '%');
               setTemp1(decoded.temperature);
               setHum1(decoded.humidity);
             }
@@ -360,6 +362,9 @@ function App() {
       client.removeListener('message', handleMessage);
     };
   }, [decoderMode]);
+
+  // Log current gauge values before rendering
+  console.log('🎨 Rendering gauges with values:', { temp1, hum1, temp2, hum2 });
 
   return (
     <div style={{ padding: 32 }}>
