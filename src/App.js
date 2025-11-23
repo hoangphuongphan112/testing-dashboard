@@ -260,6 +260,13 @@ function App() {
                     time: point.timestamp,
                     value: point.value
                   }));
+                  
+                  // Log non-zero values
+                  const nonZeroPoints = newPoints.filter(p => p.value !== 0);
+                  if (nonZeroPoints.length > 0) {
+                    console.log(`  ⚡ ${mappedKey} NON-ZERO values detected:`, nonZeroPoints.map(p => p.value.toFixed(2) + 'mV').join(', '));
+                  }
+                  
                   console.log(`  Mapping channel ${i} to ${mappedKey}: ${newPoints.length} new points, ${oldArr.length} old points`);
                   const combined = [...oldArr, ...newPoints].filter(d => now - d.time <= WINDOW_MS);
                   console.log(`  ${mappedKey} after filter: ${combined.length} points (filtered ${newPoints.length - combined.length + oldArr.length - combined.length} old points)`);

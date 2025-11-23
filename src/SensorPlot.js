@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, ReferenceLine
 } from 'recharts';
 
 function formatTime(ms) {
@@ -21,9 +21,30 @@ export default function SensorPlot({ title, data }) {
   // y-range
   let minY = 0, maxY = 10;
   if (chartData.length) {
-    minY = Math.floor(Math.min(...chartData.map(d => d.value)) * 2) / 2;
-    maxY = Math.ceil (Math.max(...chartData.map(d => d.value)) * 2) / 2;
-    if (minY === maxY) { minY -= 0.5; maxY += 0.5; }
+    const values = chartData.map(d => d.value);
+    const dataMin = Math.min(...values);
+    const dataMax = Math.max(...values);
+    
+    minY = Math.floor(dataMin * 2) / 2;
+    maxY = Math.ceil(dataMax * 2) / 2;
+    
+    // Ensure we have a reasonable range even for zero or constant values
+    if (minY === maxY) { 
+      if (minY === 0) {
+        minY = -1;
+        maxY = 1;
+      } else {
+        minY -= 0.5; 
+        maxY += 0.5; 
+      }
+    }
+    
+    // Ensure minimum visible range of at least 1mV
+    if (maxY - minY < 1) {
+      const center = (minY + maxY) / 2;
+      minY = center - 0.5;
+      maxY = center + 0.5;
+    }
   }
   const ticks = [];
   for (let t = minY; t <= maxY + 1e-9; t += 0.5) ticks.push(Number(t.toFixed(2)));
@@ -92,6 +113,7 @@ export default function SensorPlot({ title, data }) {
             </YAxis>
 
             <Tooltip labelFormatter={formatTime} formatter={v => Number(v).toFixed(2)} />
+            <ReferenceLine y={0} stroke="#666" strokeDasharray="3 3" strokeWidth={1} />
             <Line type="monotone" dataKey="value" stroke="#0000ff" dot={false} isAnimationActive={false} strokeWidth={2.2} />
           </LineChart>
         </ResponsiveContainer>
