@@ -1,0 +1,83 @@
+:root {
+  --card-h: 300px;
+}
+
+/* 4 plots per row with spacing - designed for a 4×4 (16) layout */
+.plots-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
+  gap: 28px;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto 24px;
+  align-items: stretch;
+}
+
+.plots-grid > * {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+/* gauges: single row (4 across) under plots on wide screens */
+.gauges-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 24px auto 0;
+  align-items: start;
+  justify-items: center;
+}
+
+/* small card wrapper around each gauge to show title + gauge centered */
+/* Use flexbox so the title + dial are centered and vertically aligned */
+.gauge-card {
+  width: 100%;
+  max-width: 320px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.gauge-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+}
+
+/* Reduce visual density on smaller screens:
+   - decrease plot card height
+   - collapse the gauges row to 2 columns and then 1 column
+*/
+@media (max-width: 1400px) {
+  :root { --card-h: 260px; }
+  .plots-grid { grid-template-columns: repeat(2, minmax(240px, 1fr)); }
+  .gauges-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
+  .gauge-card { padding: 14px; max-width: 300px; }
+  .gauge-card h3 { font-size: 1rem; margin-bottom: 8px; }
+}
+
+@media (max-width: 1000px) {
+  :root { --card-h: 220px; }
+  .plots-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); gap: 20px; }
+  .gauges-grid { grid-template-columns: repeat(2, minmax(160px, 1fr)); gap: 16px; }
+  .gauge-card { padding: 12px; max-width: 260px; }
+  .gauge-card h3 { font-size: 0.95rem; margin-bottom: 6px; }
+}
+
+@media (max-width: 700px) {
+  :root { --card-h: 200px; }
+  .plots-grid { grid-template-columns: 1fr; gap: 16px; }
+  .gauges-grid { grid-template-columns: 1fr; }
+  .plots-grid > * { padding: 8px; }
+  .gauge-card { padding: 10px; max-width: 420px; }
+  .gauge-card h3 { font-size: 0.95rem; margin: 6px 0; }
+}
