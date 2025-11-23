@@ -5,11 +5,17 @@ const brokerUrl = 'wss://broker.hivemq.com:8884/mqtt'; // Make sure this matches
 const options = {
   clientId: 'sensor-dashboard-' + Math.random().toString(16).substr(2, 8),
   clean: true,
-  reconnectPeriod: 1000, // Reconnect after 1 second if disconnected
+  reconnectPeriod: 2000, // Reconnect after 2 seconds if disconnected
   connectTimeout: 30 * 1000, // 30 seconds
-  keepalive: 60, // Send ping every 60 seconds
+  keepalive: 30, // Send ping every 30 seconds (more frequent)
   resubscribe: true, // Automatically resubscribe on reconnect
   protocolVersion: 4, // MQTT 3.1.1
+  will: {
+    topic: 'iot/status',
+    payload: 'Dashboard disconnected',
+    qos: 0,
+    retain: false
+  }
 };
 
 const client = mqtt.connect(brokerUrl, options);

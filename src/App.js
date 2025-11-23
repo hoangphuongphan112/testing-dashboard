@@ -29,6 +29,7 @@ function App() {
   const [lastMessage, setLastMessage] = useState(null);
   const [connectionEvents, setConnectionEvents] = useState([]);
   const [topicMessages, setTopicMessages] = useState({});
+  const [lastMessageTime, setLastMessageTime] = useState(Date.now());
 
   // Running average offset (device time - browser time)
   const offsetRef = useRef(0);
@@ -208,6 +209,7 @@ function App() {
     const handleMessage = (topic, message) => {
       const browserNow = Date.now();
       setMessageCount(prev => prev + 1);
+      setLastMessageTime(browserNow);
       
       // Track messages per topic
       setTopicMessages(prev => ({
@@ -373,6 +375,15 @@ function App() {
   // Log current gauge values before rendering
   console.log('🎨 Rendering gauges with values:', { temp1, hum1, temp2, hum2 });
 
+  // Calculate time since last message
+  const [timeSinceLastMessage, setTimeSinceLastMessage] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeSinceLastMessage(Math.floor((Date.now() - lastMessageTime) / 1000));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [lastMessageTime]);
+
   return (
     <div style={{ padding: 32 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
@@ -397,6 +408,16 @@ function App() {
             fontWeight: 'bold'
           }}>
             📊 Messages: {messageCount}
+          </div>
+          <div style={{
+            padding: '8px 16px',
+            borderRadius: '8px',
+            backgroundColor: timeSinceLastMessage > 10 ? '#fff3cd' : '#d4edda',
+            border: `2px solid ${timeSinceLastMessage > 10 ? '#ffc107' : '#28a745'}`,
+            color: timeSinceLastMessage > 10 ? '#856404' : '#155724',
+            fontWeight: 'bold'
+          }}>
+            ⏱️ Last: {timeSinceLastMessage}s ago
           </div>
           <button 
           onClick={toggleDecoderMode}
