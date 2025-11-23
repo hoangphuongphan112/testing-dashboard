@@ -231,8 +231,8 @@ function App() {
           const data = JSON.parse(message.toString());
           console.log('  Parsed JSON:', data);
 
-          // Check if base64 mode and base64_sensordata exists
-          if (decoderMode === 'base64' && data.base64_sensordata) {
+          // Check if base64_sensordata exists (auto-detect or manual mode)
+          if (data.base64_sensordata && (decoderMode === 'base64' || decoderMode === 'original')) {
             console.log('  🔍 Base64 mode - decoding base64_sensordata');
             console.log('  Base64 data length:', data.base64_sensordata.length);
             const decoded = decodePiezoData(data.base64_sensordata);
@@ -312,8 +312,8 @@ function App() {
           const data = JSON.parse(message.toString());
           console.log('  Parsed temp/hum JSON:', data);
           
-          // Check if base64 mode and base64_sensordata exists
-          if (decoderMode === 'base64' && data.base64_sensordata) {
+          // Check if base64_sensordata exists (auto-detect or manual mode)
+          if (data.base64_sensordata && (decoderMode === 'base64' || decoderMode === 'original')) {
             console.log('  🔍 Base64 mode - decoding temp/hum base64_sensordata');
             const decoded = decodeTempHumData(data.base64_sensordata);
             if (decoded) {
