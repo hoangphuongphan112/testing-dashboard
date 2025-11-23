@@ -75,7 +75,7 @@ function App() {
       let offset = 8;
       let invalidCount = 0;
       
-      for (let ch = 0; ch < numChannels; ch++) {
+        for (let ch = 0; ch < numChannels; ch++) {
         for (let s = 0; s < numSamples; s++) {
           const rawValue = view.getInt16(offset, true); // signed int16, little-endian
           const timestamp = baseTimestamp * 1000 + (s * sampleIntervalMs);
@@ -83,7 +83,12 @@ function App() {
           // Detects -32768 (0x8000) as the ONLY invalid data marker
           if (rawValue === -32768) {
             invalidCount++;
-            console.log(`  [Piezo Decode] INVALID marker detected: sample=${s}, channel=${ch}, rawValue=${rawValue} (0x8000)`);
+            console.log(`  [Piezo Decode] INVALID marker detected: sample=${s}, channel=${ch}, rawValue=${rawValue} (0x8000) - plotting as 0`);
+            // Plot as 0 instead of skipping
+            channels[ch].push({
+              timestamp: timestamp,
+              value: 0
+            });
           } else {
             const voltage = rawValue / 100.0; // Convert from centimV to mV
             channels[ch].push({
@@ -94,11 +99,9 @@ function App() {
           
           offset += 2;
         }
-      }
-      
-      console.log(`  [Piezo Decode] Decoded channels: ${channels.map((ch, i) => `Ch${i}: ${ch.length} valid samples`).join(', ')}`);
+      }      console.log(`  [Piezo Decode] Decoded channels: ${channels.map((ch, i) => `Ch${i}: ${ch.length} samples`).join(', ')}`);
       if (invalidCount > 0) {
-        console.log(`  [Piezo Decode] Filtered out ${invalidCount} invalid samples (0x8000 marker)`);
+        console.log(`  [Piezo Decode] Found ${invalidCount} invalid samples (0x8000 marker) - plotted as 0`);
       }
       
       return { channels: channels, baseTimestamp, sampleIntervalMs };
