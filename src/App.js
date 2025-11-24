@@ -361,7 +361,7 @@ function App() {
     });
 
     // Log initial state
-    addConnectionEvent('🚀 Dashboard initialized');
+    addConnectionEvent('Dashboard initialized');
 
     return () => {
       client.removeListener('connect', handleConnect);
