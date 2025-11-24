@@ -407,7 +407,7 @@ function App() {
             color: '#004085',
             fontWeight: 'bold'
           }}>
-            📊 Messages: {messageCount}
+            Messages: {messageCount}
           </div>
           <div style={{
             padding: '8px 16px',
@@ -417,7 +417,7 @@ function App() {
             color: timeSinceLastMessage > 10 ? '#856404' : '#155724',
             fontWeight: 'bold'
           }}>
-            ⏱️ Last: {timeSinceLastMessage}s ago
+            Last: {timeSinceLastMessage}s ago
           </div>
           <button 
           onClick={toggleDecoderMode}
@@ -449,13 +449,13 @@ function App() {
           fontFamily: 'monospace',
           fontSize: '14px'
         }}>
-          <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>📩 Last Message:</div>
+          <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Last Message:</div>
           <div><strong>Topic:</strong> {lastMessage.topic}</div>
           <div><strong>Time:</strong> {lastMessage.time}</div>
           <div><strong>Size:</strong> {lastMessage.length} bytes</div>
           <div><strong>Preview:</strong> {lastMessage.preview}{lastMessage.length > 100 ? '...' : ''}</div>
           <div style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
-            💡 Open browser console (F12) for detailed message logs
+            Open browser console (F12) for detailed message logs
           </div>
         </div>
       )}
@@ -469,7 +469,7 @@ function App() {
         borderRadius: '8px',
         fontSize: '14px'
       }}>
-        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>📊 Diagnostics</div>
+        <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>Diagnostics</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '12px' }}>
           <div>
             <strong>Total Messages:</strong> {messageCount}
@@ -507,7 +507,7 @@ function App() {
         )}
         
         <div style={{ marginTop: '12px', fontSize: '12px', color: '#856404', backgroundColor: '#fff', padding: '8px', borderRadius: '4px' }}>
-          💡 <strong>Troubleshooting:</strong> If messages stop after 5:
+          <strong>Troubleshooting:</strong> If messages stop after 5:
           <ul style={{ margin: '4px 0 0 20px', padding: 0 }}>
             <li>Check if ESP32/device is still publishing</li>
             <li>Look for "reconnecting" events above</li>
